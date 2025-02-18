@@ -8,7 +8,7 @@ import AdminSidebar from "./AdminSidebar";
 import CreateProduct from "./CreateProduct";
 import Cart from "./Cart";
 import Checkout from "./Checkout";
-import ThankYou from "./Thankyou";
+import ThankYou from "./ThankYou";
 import AllOrders from "./AllOrders";
 import UserOrders from "./UserOrders";
 import OrderDetails from "./OrderDetails";
