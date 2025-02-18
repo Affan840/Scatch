@@ -1,9 +1,8 @@
 import { Router } from "express";
-
 const router = Router();
+import { createOwner, loginOwner } from "../controllers/owner.controllers.js";
 
-router.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+router.post("/", loginOwner);
+router.post('/create', createOwner);
 
 export default router;

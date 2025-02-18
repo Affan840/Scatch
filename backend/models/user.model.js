@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose, { Mongoose } from "mongoose"
 
 
 const userSchema = mongoose.Schema({
@@ -9,13 +9,12 @@ const userSchema = mongoose.Schema({
         type: Array,
         default: []
     },
-    isAdmin: Boolean,
     orders: {
-        type: Array,
-        default: []
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Order'
     },
     contact: Number,
     picture: String
-})
+},{ timestamps: true })
 
 export const User = mongoose.model('User', userSchema)
