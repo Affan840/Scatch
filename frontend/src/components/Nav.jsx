@@ -29,7 +29,7 @@ const Nav = () => {
     <>
       <nav className="w-full flex justify-between fixed top-0 left-0 px-8 py-3 bg-white z-[50]">
         <Link
-          to="/shop"
+          to="shop"
           className="cursor-pointer text-2xl font-medium text-blue-400"
         >
           Scatch
@@ -58,7 +58,7 @@ const Nav = () => {
             location.pathname !== "/" && (
               <div className="flex gap-4">
                 <Link
-                  to="/auth"
+                  to="auth"
                   className="bg-blue-400 text-white px-4 py-2 rounded-md"
                 >
                   Login
