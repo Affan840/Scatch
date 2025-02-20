@@ -31,10 +31,10 @@ const App = () => {
     };
 
     checkAutoLogin();
-  }, [setUser]); // ✅ Fix: Add `setUser` dependency
+  }, [setUser]); 
 
   useEffect(() => {
-    if (!loading && !location.pathname.includes("/thankyou")) {
+    if (!loading && !location.pathname.includes("/thankyou") && location.pathname !== "/shop") {
       navigate("/shop");
     }
   }, [loading, location.pathname, navigate]); // ✅ Fix: Prevent infinite loop
