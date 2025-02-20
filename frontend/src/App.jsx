@@ -38,7 +38,7 @@ const App = () => {
   }, [setUser]); 
 
   useEffect(() => {
-    if (!loading && !location.pathname.includes("/thankyou") && location.pathname !== "/shop") {
+    if (!loading && !location.pathname.includes("/thankyou")) {
       navigate("/shop");
     }
   }, [loading, location.pathname, navigate]);
