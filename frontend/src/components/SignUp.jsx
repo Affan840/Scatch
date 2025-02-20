@@ -34,7 +34,7 @@ const SignUp = () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, userData);
       console.log(response);
-      navigate('/shop');
+      navigate('/');
     } catch (error) {
       console.error("Error registering user:", error);
       setApiError(error.response?.data || "Something went wrong. Please try again.");

@@ -26,7 +26,7 @@ const Login = () => {
         }
       );
       setUser(response.data);
-      navigate("/shop");
+      navigate("/");
       console.log(response.data);
     } catch (error) {
       console.log(error);

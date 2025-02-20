@@ -29,7 +29,7 @@ const Nav = () => {
     <>
       <nav className="w-full flex justify-between fixed top-0 left-0 px-8 py-3 bg-white z-[50]">
         <Link
-          to="shop"
+          to="/"
           className="cursor-pointer text-2xl font-medium text-blue-400"
         >
           Scatch
