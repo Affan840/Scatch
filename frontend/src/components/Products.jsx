@@ -27,7 +27,9 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/products`
+          `${import.meta.env.VITE_BASE_URL}/products`, {
+            withCredentials: true,
+          }
         );
         if (response.data.products) {
           console.log(response.data.products);
