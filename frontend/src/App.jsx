@@ -7,14 +7,12 @@ import axios from "axios";
 const App = () => {
   const { setUser } = useUser();
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     const checkAutoLogin = async () => {
       try {
         console.log("Fetching products from:", `${import.meta.env.VITE_BASE_URL}/shop`);
-        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/shop`, {
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/`, {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
