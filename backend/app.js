@@ -25,12 +25,18 @@ import usersRoute from "./routes/users.routes.js";
 import productsRoute from "./routes/products.routes.js";
 import authRoute from "./routes/index.js";
 import ordersRoute from "./routes/orders.routes.js";
+import { Product } from "./models/product.model.js";
 
 app.use("/shop",authRoute);
 app.use("/owners", ownersRoute);
 app.use("/users", usersRoute);
 app.use("/products", productsRoute);
 app.use("/orders", ordersRoute);
+
+app.get('/prod', async (req, res) => {
+    const products = await Product.find({})
+    res.json(products);
+})
 
 connectDB()
   .then(() => {
