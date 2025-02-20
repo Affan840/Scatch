@@ -73,19 +73,19 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/owners/dashboard",
+        index: true,
         element: <AdminProducts />,
       },
       {
-        path: "/owners/dashboard/createProduct",
+        path: "createProduct",
         element: <CreateProduct />,
       },
       {
-        path: "/owners/dashboard/orders",
+        path: "orders",
         element: <AllOrders />,
       },
       {
-        path: "/owners/dashboard/orders/:orderId",
+        path: "orders/:orderId",
         element: <OrderDetails />,
       }
     ],
