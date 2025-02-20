@@ -1,8 +1,13 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Login, SignUp } from "../components"
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState("signup");
+
+  useEffect(() => {
+    console.log('Auth');
+    
+  }, []);
 
   return (
     <div className="flex h-screen relative xl:px-32 2xl:px-60 px-20 flex-col items-center justify-center lg:flex-row">
