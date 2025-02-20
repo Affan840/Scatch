@@ -37,12 +37,6 @@ const App = () => {
     checkAutoLogin();
   }, [setUser]); 
 
-  useEffect(() => {
-    if (!loading && !location.pathname.includes("/thankyou")) {
-      navigate("/shop");
-    }
-  }, [loading, location.pathname, navigate]);
-
   if (loading) {
     return (
       <div className="flex justify-center w-full items-center h-screen absolute left-0 top-0">
