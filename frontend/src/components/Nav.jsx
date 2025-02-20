@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useProducts, useUser } from "../contexts";
 import { ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
