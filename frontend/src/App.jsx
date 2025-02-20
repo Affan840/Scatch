@@ -16,28 +16,35 @@ const App = () => {
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/shop`, {
           withCredentials: true,
         });
+
         if (response.status === 200) {
           setUser(response.data.user); 
         } else {
           setUser(null);
         }
       } catch (error) {
-        console.error('No token found:', error);
+        console.error("No token found:", error);
         setUser(null);
       } finally {
         setLoading(false);
-        if (!location.pathname.includes("/thankyou")) {
-        navigate ("/shop");
       }
-    }
     };
+
     checkAutoLogin();
-  }, []);
-  
+  }, [setUser]); // ✅ Fix: Add `setUser` dependency
+
+  useEffect(() => {
+    if (!loading && !location.pathname.includes("/thankyou")) {
+      navigate("/shop");
+    }
+  }, [loading, location.pathname, navigate]); // ✅ Fix: Prevent infinite loop
+
   if (loading) {
-    return    <div className="flex justify-center w-full  items-center h-screen absolute left-0 top-0">
-    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
-  </div>
+    return (
+      <div className="flex justify-center w-full items-center h-screen absolute left-0 top-0">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+    );
   }
 
   return (
