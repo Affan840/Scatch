@@ -27,23 +27,23 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/shop",
+        path: "shop",
         element: <Shop />,
       },
       {
-        path: "/auth",
+        path: "auth",
         element: <Home />,
       },
       {
-        path: "/checkout",
+        path: "checkout",
         element: <Checkout />,
       },
       {
-        path: "/thankyou",
+        path: "thankyou",
         element: <ThankYou />,
       },
       {
-        path: "/myorders",
+        path: "myorders",
         element: <UserOrders />,
       },
       {
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/owners",
+    path: "owners",
     element: (
       <OwnerProvider>
         <AdminPage />
@@ -92,7 +92,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-// Wrap everything in ProductsProvider only once
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <RouterProvider router={router} />
