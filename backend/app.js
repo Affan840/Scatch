@@ -33,11 +33,6 @@ app.use("/users", usersRoute);
 app.use("/products", productsRoute);
 app.use("/orders", ordersRoute);
 
-app.get('/prod', async (req, res) => {
-    const products = await Product.find({})
-    res.json(products);
-})
-
 connectDB()
   .then(() => {
     app.listen(3000, () => {
