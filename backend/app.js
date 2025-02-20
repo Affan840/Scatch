@@ -4,14 +4,12 @@ dotenv.config({ path: "./.env" });
 import express from "express";
 import connectDB from "./config/mongoose.connection.js";
 import cookieParser from "cookie-parser";
-import flash from "connect-flash";
-import session from "express-session";
 import cors from "cors";
 
 const app = express();
 
 app.use(cors({
-  origin: "https://scatch-khaki.vercel.app",  
+  origin: ["https://scatch-khaki.vercel.app"],  
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -28,9 +26,7 @@ import productsRoute from "./routes/products.routes.js";
 import authRoute from "./routes/index.js";
 import ordersRoute from "./routes/orders.routes.js";
 
-app.use("/shop", (req,res) => {
-  res.json({ message: "Hello World" });
-});
+app.use("/shop",authRoute);
 app.use("/owners", ownersRoute);
 app.use("/users", usersRoute);
 app.use("/products", productsRoute);
