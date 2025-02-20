@@ -55,7 +55,7 @@ const Nav = () => {
               </button>
             </div>
           ) : (
-            location.pathname !== "/" && (
+            location.pathname === "/" && (
               <div className="flex gap-4">
                 <Link
                   to="/auth"
