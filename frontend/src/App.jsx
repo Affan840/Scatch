@@ -15,6 +15,9 @@ const App = () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/shop`, {
           withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
 
         if (response.status === 200) {

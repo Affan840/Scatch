@@ -29,6 +29,9 @@ const Products = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/products`, {
             withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            }
           }
         );
         if (response.data.products) {
