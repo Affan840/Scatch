@@ -5,12 +5,6 @@ import { Product } from "../models/product.model.js";
 const router = Router();
 
 router.get("/", isLoggedIn, async (req, res) => {
-  if (req.user) {
-    res.status(200).json({ user: req.user });
-  }
-});
-
-router.get("/", (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Max-Age", "1800");
@@ -19,6 +13,12 @@ router.get("/", (req, res) => {
     "Access-Control-Allow-Methods",
     "PUT, POST, GET, DELETE, PATCH, OPTIONS"
   );
+
+  if (req.user) {
+    return res.status(200).json({ user: req.user });
+  } else {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 });
 
 export default router;

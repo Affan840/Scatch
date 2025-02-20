@@ -13,6 +13,7 @@ const App = () => {
   useEffect(() => {
     const checkAutoLogin = async () => {
       try {
+        console.log("Fetching products from:", `${import.meta.env.VITE_BASE_URL}/shop`);
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/shop`, {
           withCredentials: true,
           headers: {
