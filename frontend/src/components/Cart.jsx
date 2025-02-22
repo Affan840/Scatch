@@ -40,7 +40,7 @@ const Cart = ({ isCartOpen, setIsCartOpen }) => {
                 className="text-gray-500 hover:text-gray-700 transition-colors"
                 onClick={() => setIsCartOpen(false)}
               >
-                <X size={24} />
+                <X size={24} className="cursor-pointer" />
               </button>
             </div>
           </div>
@@ -71,14 +71,14 @@ const Cart = ({ isCartOpen, setIsCartOpen }) => {
                     </div>
                     <div className="flex items-center gap-3">
                       <button
-                        className="text-gray-500 hover:text-gray-700 transition-colors"
+                        className="text-gray-500 cursor-pointer hover:text-gray-700 transition-colors"
                         onClick={() => decreaseQuantity(item._id)}
                       >
                         <Minus size={20} />
                       </button>
                       <span className="font-semibold">{item.quantity}</span>
                       <button
-                        className="text-gray-500 hover:text-gray-700 transition-colors"
+                        className="text-gray-500 cursor-pointer hover:text-gray-700 transition-colors"
                         onClick={() => increaseQuantity(item._id)}
                       >
                         <Plus size={20} />
@@ -111,15 +111,15 @@ const Cart = ({ isCartOpen, setIsCartOpen }) => {
                   setIsCartOpen(false);
                   navigate("/checkout");
                 }}
-                className="w-full bg-blue-600 text-white py-3 rounded-md text-lg font-semibold transition duration-300 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 mb-2"
+                className="w-full bg-blue-600 text-white py-3 rounded-md text-lg font-semibold transition cursor-pointer duration-300 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 mb-2"
               >
                 Proceed to Checkout
               </button>
               <button
-                className="w-full bg-red-500 text-white py-3 rounded-md text-lg font-semibold transition duration-300 ease-in-out hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 flex items-center justify-center"
+                className="w-full bg-red-500 text-white py-3 rounded-md text-lg font-semibold transition duration-300 ease-in-out hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 flex items-center justify-center cursor-pointer"
                 onClick={clearCart}
               >
-                <Trash2 size={20} className="mr-2" /> Clear Cart
+                <Trash2 size={20} className="mr-2 " /> Clear Cart
               </button>
             </div>
           )}

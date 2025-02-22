@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useProducts, useUser } from "../contexts";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import Cart from "./Cart";
 import axios from "axios";
@@ -14,16 +14,17 @@ const Nav = () => {
 
   const handleLogout = async () => {
     setUser(null);
-   const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/users/logout`, {
-      withCredentials: true,
-    });
+    const response = await axios.get(
+      `${import.meta.env.VITE_BASE_URL}/users/logout`,
+      {
+        withCredentials: true,
+      }
+    );
 
-  console.log(response);
+    console.log(response);
   };
 
-  useEffect(() => {
-    
-  }, [cartCount]);
+  useEffect(() => {}, [cartCount]);
 
   return (
     <>
@@ -36,8 +37,7 @@ const Nav = () => {
         </Link>
         <div>
           {userData ? (
-            <div className="flex items-center gap-6">
-              <p onClick={() => {navigate(`/myorders`)}} className="text-lg">Hello, {userData.fullname}</p>
+            <div className="flex items-center gap-6 mr-6">
               <div
                 className="flex items-center cursor-pointer"
                 onClick={() => setIsCartOpen(true)}
@@ -47,12 +47,27 @@ const Nav = () => {
                   {cartCount}
                 </span>
               </div>
-              <button
-                onClick={handleLogout}
-                className="bg-red-400 text-white px-2 py-1 rounded-md"
-              >
-                Logout
-              </button>
+              <div className="relative">
+      <div className="cursor-pointer p-2 hover:bg-gray-100 rounded-md group">
+        <User size={24} />
+
+        <div className="absolute right-0 mt-2 w-40 bg-white shadow-md  border opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 ease-in-out transform translate-y-2">
+          <ul className="py-2">
+            <li className="px-4 py-2 cursor-pointer" onClick={(e) => {
+              e.stopPropagation();
+              navigate("/myorders")}}>
+              My Orders
+            </li>
+            <li
+              className="px-4 py-2 text-red-600 cursor-pointer"
+              onClick={handleLogout} 
+            >
+              Logout
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
             </div>
           ) : (
             location.pathname === "/" && (
@@ -68,7 +83,9 @@ const Nav = () => {
           )}
         </div>
       </nav>
-      {userData && <Cart isCartOpen={isCartOpen} setIsCartOpen={setIsCartOpen} />}
+      {userData && (
+        <Cart isCartOpen={isCartOpen} setIsCartOpen={setIsCartOpen} />
+      )}
     </>
   );
 };

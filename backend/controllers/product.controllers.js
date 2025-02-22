@@ -3,16 +3,13 @@ import { Product } from "../models/product.model.js";
 
 const createProduct = async (req, res) => {
    try {
-     const { name, discount, price, bgcolor, panelcolor, textcolor  } = req.body;
+     const { name, discount, price  } = req.body;
      const image = req.file.buffer;
      const product = await Product.create({
        name,
        price,
        discount,
-       image,
-       bgcolor,
-       panelcolor,
-       textcolor,
+       image
      });
      res.status(201).json(product);
    } catch (error) {
