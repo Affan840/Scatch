@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useProducts, useUser } from "../contexts";
 import { ShoppingCart, User } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Cart from "./Cart";
 import axios from "axios";
 
@@ -11,6 +11,24 @@ const Nav = () => {
   const location = useLocation();
   const { cartCount } = useProducts();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleToggle = () => {
+    setIsCartOpen(!isCartOpen);
+  };
 
   const handleLogout = async () => {
     setUser(null);
@@ -47,27 +65,46 @@ const Nav = () => {
                   {cartCount}
                 </span>
               </div>
-              <div className="relative">
-      <div className="cursor-pointer p-2 hover:bg-gray-100 rounded-md group">
-        <User size={24} />
+              <div
+                ref={dropdownRef}
+                className="relative cursor-pointer p-2 hover:bg-gray-100 rounded-md group"
+              >
+                <div onClick={handleToggle}>
+                  <User size={24} />
+                </div>
 
-        <div className="absolute right-0 mt-2 w-40 bg-white shadow-md  border opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 ease-in-out transform translate-y-2">
-          <ul className="py-2">
-            <li className="px-4 py-2 cursor-pointer" onClick={(e) => {
-              e.stopPropagation();
-              navigate("/myorders")}}>
-              My Orders
-            </li>
-            <li
-              className="px-4 py-2 text-red-600 cursor-pointer"
-              onClick={handleLogout} 
-            >
-              Logout
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+                <div
+                  className={`absolute right-0 mt-2 w-40 bg-white shadow-md border transition-all duration-200 ease-in-out transform 
+        ${
+          isOpen
+            ? "opacity-100 visible translate-y-0"
+            : "opacity-0 invisible translate-y-2"
+        } 
+        group-hover:opacity-100 group-hover:visible group-hover:translate-y-0`}
+                >
+                  <ul className="py-2">
+                    <li
+                      className="px-4 py-2 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate("/myorders");
+                        setIsOpen(false); // Close dropdown after navigation
+                      }}
+                    >
+                      My Orders
+                    </li>
+                    <li
+                      className="px-4 py-2 text-red-600 cursor-pointer"
+                      onClick={() => {
+                        handleLogout();
+                        setIsOpen(false); // Close dropdown after logout
+                      }}
+                    >
+                      Logout
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           ) : (
             location.pathname === "/" && (
