@@ -85,52 +85,69 @@ const AdminProducts = () => {
       </div>
       {filteredProducts.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-          {filteredProducts.map((product) => (
-            <div key={product._id} className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="relative h-36 md:h-64 bg-gray-200">
+           {filteredProducts.map((product) => (
+            <div
+              key={product._id}
+              style={{
+                backgroundColor: product.bgcolor || "#34212f",
+                color: product.textcolor,
+              }}
+              className="rounded-lg transition-all duration-300 hover:shadow-md flex flex-col group cursor-pointer overflow-hidden"
+            >
+              <div className="aspect-square  rounded-lg overflow-hidden">
                 <img
-                  className="w-full h-full object-contain"
                   src={product.image || "/placeholder.svg"}
                   alt={product.name}
+                  className="w-full h-full object-contain p-4 transition-transform duration-150 group-hover:scale-150"
                 />
-                {ownerData && (
-                  <button
-                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition duration-300 ease-in-out"
-                    onClick={() => deleteProduct(product._id)}
-                  >
-                    <X size={16} />
-                  </button>
-                )}
               </div>
-              <div className="p-3 sm:p-4">
-                <h3 className="font-semibold text-sm sm:text-base text-gray-800 mb-1 sm:mb-2 truncate">
-                  {product.name}
-                </h3>
-                <p className="text-gray-600 text-sm mb-2 sm:mb-4">${product.price.toFixed(2)}</p>
-                <div className="flex justify-between items-center">
+              <div
+                className="p-2 sm:text-md text-sm font-light  sm:font-medium"
+                style={{
+                  backgroundColor: product.panelcolor || "#5f9493",
+                }}
+              >
+                <div className="sm:space-y-2">
+                  <h3>{product.name}</h3>
+                  <p>${product.price.toFixed(2)}</p>
+                </div>
+
+                <div className="sm:mt-3 mt-1">
                   {cart[product._id] ? (
-                    <div className="flex items-center w-full justify-between">
+                    <div className="flex items-center justify-between rounded-full bg-white p-1">
                       <button
-                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold p-1 sm:p-2 rounded-full transition duration-300 ease-in-out"
-                        onClick={() => (userData ? decreaseQuantity(product._id) : navigate("/"))}
+                        onClick={() =>
+                          userData
+                            ? decreaseQuantity(product._id)
+                            : navigate("/")
+                        }
+                        className="sm:h-8 sm:w-8 h-5 w-5 flex items-center justify-center rounded-full bg-gray-900 hover:bg-gray-800 text-white transition-colors cursor-pointer"
                       >
-                        <Minus size={14} />
+                        <Minus size={16} />
                       </button>
-                      <span className="font-semibold text-sm">{cart[product._id]}</span>
+                      <span>{cart[product._id]}</span>
                       <button
-                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold p-1 sm:p-2 rounded-full transition duration-300 ease-in-out"
-                        onClick={() => (userData ? increaseQuantity(product._id) : navigate("/"))}
+                        onClick={() =>
+                          userData
+                            ? increaseQuantity(product._id)
+                            : navigate("/")
+                        }
+                        className="sm:h-8 sm:w-8 h-5 w-5 flex items-center justify-center rounded-full bg-gray-900 hover:bg-gray-800 text-white transition-colors cursor-pointer"
                       >
-                        <Plus size={14} />
+                        <Plus size={16} />
                       </button>
                     </div>
                   ) : (
                     <button
-                      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-2 sm:py-2 sm:px-4 rounded-full transition duration-300 ease-in-out flex items-center w-full justify-center text-xs sm:text-sm"
-                      onClick={() => (userData ? addToCart(product._id) : navigate("/"))}
+                      onClick={() =>
+                        userData ? addToCart(product._id) : navigate("/")
+                      }
+                      className="w-full flex items-center justify-center gap-2   rounded-full md:py-2  py-1 sm:px-4 transition-colors cursor-pointer bg-white"
                     >
-                      <ShoppingCart className="mr-1 sm:mr-2" size={16} />
-                      Add to Cart
+                      <ShoppingCart size={18} />
+                      <span className="md:font-medium font-light ">
+                        Add to Cart
+                      </span>
                     </button>
                   )}
                 </div>
