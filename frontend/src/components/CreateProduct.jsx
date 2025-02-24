@@ -10,6 +10,9 @@ const CreateProduct = () => {
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [discountPrice, setDiscountPrice] = useState("");
+  const [bgColor, setBgColor] = useState("");
+  const [panelColor, setPanelColor] = useState("");
+  const [textColor, setTextColor] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -132,7 +135,64 @@ const CreateProduct = () => {
               />
             </div>
           </div>
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold mb-4">Panel Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label
+                  htmlFor="bgColor"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Background Color
+                </label>
+                <input
+                  id="bgColor"
+                  name="bgcolor"
+                  type="text"
+                  placeholder="Background Color"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={bgColor}
+                  onChange={(e) => setBgColor(e.target.value)}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="panelColor"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Panel Color
+                </label>
+                <input
+                  id="panelColor"
+                  name="panelcolor"
+                  type="text"
+                  placeholder="Panel Color"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={panelColor}
+                  onChange={(e) => setPanelColor(e.target.value)}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="textColor"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Text Color
+                </label>
+                <input
+                  id="textColor"
+                  name="textcolor"
+                  type="text"
+                  placeholder="Text Color"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={textColor}
+                  onChange={(e) => setTextColor(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
         </div>
+
         <button
           type="submit"
           className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out"

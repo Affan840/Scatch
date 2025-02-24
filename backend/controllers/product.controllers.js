@@ -9,7 +9,10 @@ const createProduct = async (req, res) => {
        name,
        price,
        discount,
-       image
+       image,
+       bgcolor,
+       panelcolor,
+       textcolor,
      });
      res.status(201).json(product);
    } catch (error) {
