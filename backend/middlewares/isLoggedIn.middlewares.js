@@ -2,8 +2,9 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 
 const isLoggedIn = async (req, res, next) => {
+  console.log("Cookies received:", req.cookies); // Check if cookies exist
   const token = req.cookies.token;
-  console.log("Received Token:", token); // Debugging log
+  console.log("Token from cookie:", token); // Check if token exists
 
   if (!token) {
     req.user = null;
@@ -27,6 +28,7 @@ const isLoggedIn = async (req, res, next) => {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
+
 
 
 export default isLoggedIn;
