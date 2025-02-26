@@ -15,7 +15,7 @@ const App = () => {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         });
-  
+        console.log("Auto-login response:", response);
         if (response.status === 200) {
           setUser(response.data.user);
         } else {
