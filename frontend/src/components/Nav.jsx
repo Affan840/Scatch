@@ -39,6 +39,7 @@ const Nav = () => {
         { withCredentials: true }
       );
       setUser(null);
+      window.location.reload();
       console.log("Logout response:", response);
     } catch (error) {
       console.log("Logout error:", error);
