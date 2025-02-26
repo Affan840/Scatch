@@ -34,16 +34,17 @@ const Nav = () => {
   const handleLogout = async () => {
     setUser(null);
     try {
+      console.log("Logging out...");
       const response = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/users/logout`,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
+      console.log("Logout response:", response);
     } catch (error) {
-      console.log(error);
+      console.log("Logout error:", error);
     }
   };
+  
 
 
   return (

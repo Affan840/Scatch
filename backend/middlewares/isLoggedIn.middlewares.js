@@ -3,8 +3,7 @@ import { User } from "../models/user.model.js";
 
 const isLoggedIn = async (req, res, next) => {
   if (!req.cookies.token) {
-    console.log( "Please login to continue");
-    return res.redirect("/");
+    return res.status(401).json({ message: "Not logged in" });
   }
 
   try {
