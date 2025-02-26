@@ -2,12 +2,14 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 
 const isLoggedIn = async (req, res, next) => {
-  if (!req.cookies.token) {
-    return res.status(401).json({ message: "Not logged in" });
+  const token = req.cookies.token;
+  if (!token) {
+    req.user = null;
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   try {
-    let decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
+    let decoded = jwt.verify(token, process.env.JWT_SECRET);
     let user = await User.findOne({ email: decoded.email }).select("-password");
     if (!user) return res.status(401).json({ message: "User not found" });
 
