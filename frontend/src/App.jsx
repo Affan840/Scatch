@@ -3,7 +3,6 @@ import { Outlet, useLocation, useNavigate } from "react-router";
 import { ProductsProvider, UserProvider, useUser } from "./contexts";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { User } from "../../backend/models/user.model";
 
 const App = () => {
   const { setUser } = useUser();
