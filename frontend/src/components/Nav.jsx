@@ -28,7 +28,7 @@ const Nav = () => {
   }, []);
 
   const handleToggle = () => {
-    setIsCartOpen(!isCartOpen);
+    setIsOpen(!isOpen);
   };
 
   const handleLogout = async () => {
