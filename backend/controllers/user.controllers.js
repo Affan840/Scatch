@@ -69,12 +69,15 @@ const loginUser = async (req, res) => {
 };
 
 const logoutUser = async (req, res) => {
+  console.log("Before logout - Cookies:", req.cookies); // Debug: Check cookies before clearing
   res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "none",
     path: "/",
+    expires: new Date(0),
   });
+  console.log("After logout - Cookies:", req.cookies); // Debug: Check if cookies are cleared
 
   req.user = null; // Clear user on backend
   return res.status(200).json({ message: "Logged out successfully" });

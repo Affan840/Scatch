@@ -38,8 +38,9 @@ const Nav = () => {
         `${import.meta.env.VITE_BASE_URL}/users/logout`,
         { withCredentials: true }
       );
+      console.log(response);
+      
       setUser(null);
-      window.location.reload();
       console.log("Logout response:", response);
     } catch (error) {
       console.log("Logout error:", error);
