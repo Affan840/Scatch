@@ -33,12 +33,16 @@ const Nav = () => {
 
   const handleLogout = async () => {
     setUser(null);
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASE_URL}/users/logout`,
-      {
-        withCredentials: true,
-      }
-    );
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/users/logout`,
+        {
+          withCredentials: true,
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
 
