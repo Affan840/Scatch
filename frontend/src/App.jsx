@@ -32,7 +32,7 @@ const App = () => {
     
 
     checkAutoLogin();
-  }, [setUser]); 
+  }, []); 
 
   if (loading) {
     return (
