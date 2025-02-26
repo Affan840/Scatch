@@ -3,6 +3,7 @@ import { Outlet, useLocation, useNavigate } from "react-router";
 import { ProductsProvider, UserProvider, useUser } from "./contexts";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { User } from "../../backend/models/user.model";
 
 const App = () => {
   const { setUser } = useUser();
@@ -13,26 +14,26 @@ const App = () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}`, {
           withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         });
-
+  
         if (response.status === 200) {
-          setUser(response.data.user); 
+          setUser(response.data.user);
         } else {
           setUser(null);
         }
       } catch (error) {
-        console.error("No token found:", error);
-        setUser(null);
+        console.error("Auto-login failed:", error);
+        setUser(null); // Ensure user is set to null on logout
       } finally {
         setLoading(false);
       }
-    };
+    };  
+    
+    
 
     checkAutoLogin();
-  }, []); 
+  }, [setUser]); 
 
   if (loading) {
     return (
