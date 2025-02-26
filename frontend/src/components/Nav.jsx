@@ -44,8 +44,6 @@ const Nav = () => {
       console.log("Logout error:", error);
     }
   };
-  
-
 
   return (
     <>
@@ -98,8 +96,8 @@ const Nav = () => {
                     </li>
                     <li
                       className="px-4 py-2 text-red-600 cursor-pointer"
-                      onClick={() => {
-                        handleLogout();
+                      onClick={async () => {
+                        await handleLogout();
                         setIsOpen(false); // Close dropdown after logout
                       }}
                     >
