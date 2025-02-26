@@ -11,6 +11,7 @@ const Nav = () => {
   const location = useLocation();
   const { cartCount } = useProducts();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const handleClickOutside = (event) => {
@@ -38,11 +39,8 @@ const Nav = () => {
         withCredentials: true,
       }
     );
-
-    console.log(response);
   };
 
-  useEffect(() => {}, [cartCount]);
 
   return (
     <>
