@@ -76,7 +76,7 @@ const Nav = () => {
                 <div
                   className={`absolute right-0 mt-2 w-40 bg-white shadow-md border transition-all duration-200 ease-in-out transform 
         ${
-          isOpen
+          setIsOpen
             ? "opacity-100 visible translate-y-0"
             : "opacity-0 invisible translate-y-2"
         } 
