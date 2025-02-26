@@ -97,6 +97,7 @@ const Nav = () => {
                     <li
                       className="px-4 py-2 text-red-600 cursor-pointer"
                       onClick={async () => {
+                        console.log("li clicked");
                         await handleLogout();
                         setIsOpen(false); // Close dropdown after logout
                       }}
