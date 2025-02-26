@@ -3,6 +3,7 @@ import { User } from "../models/user.model.js";
 
 const isLoggedIn = async (req, res, next) => {
   const token = req.cookies.token;
+  console.log(token);
   
   if (!token) {
     req.user = null;
