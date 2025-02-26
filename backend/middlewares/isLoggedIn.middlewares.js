@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 
 const isLoggedIn = async (req, res, next) => {
+  res.cookie("hello", "world");
   console.log("Cookies received:", req.cookies); // Check if cookies exist
   const token = req.cookies.token;
   console.log("Token from cookie:", token); // Check if token exists
