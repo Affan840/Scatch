@@ -69,10 +69,11 @@ const loginUser = async (req, res) => {
 };
 
 const logoutUser = async (req, res) => {
-  res.clearCookie("token", {
+  res.cookie("token", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    sameSite: "None",
+    expires: new Date(0),
     path: "/",
   });
 
