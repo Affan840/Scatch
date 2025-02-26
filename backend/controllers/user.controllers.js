@@ -69,16 +69,17 @@ const loginUser = async (req, res) => {
 };
 
 const logoutUser = async (req, res) => {
-  res.cookie("token", "", {
+  res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "None",
-    expires: new Date(0),
     path: "/",
   });
-  req.user = null;
-  res.status(200).json({ message: "Logged out successfully" });
+
+  req.user = null; // Clear user on backend
+  return res.status(200).json({ message: "Logged out successfully" });
 };
+
 
 const updateCart = async (req, res) => {
   try {
