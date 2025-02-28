@@ -53,6 +53,7 @@ const loginUser = async (req, res) => {
 
       let token = generateToken(user);
       console.log("cookie set", token);
+      res.cookie("token", token);
       res.cookie("token", token, {
         httpOnly: true, // Prevents JavaScript access
         secure: process.env.NODE_ENV === "production", // Set true only in production
