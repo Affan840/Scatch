@@ -25,6 +25,8 @@ const Login = () => {
           },
         }
       );
+      console.log(response.headers);
+      
       setUser(response.data);
       navigate("/");
       console.log(response.data);
