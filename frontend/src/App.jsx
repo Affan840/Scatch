@@ -15,14 +15,12 @@ const App = () => {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         });
-        console.log("Auto-login response:", response);
         if (response.status === 200) {
           setUser(response.data.user);
         } else {
           setUser(null);
         }
       } catch (error) {
-        console.error("Auto-login failed:", error);
         setUser(null); // Ensure user is set to null on logout
       } finally {
         setLoading(false);

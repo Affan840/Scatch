@@ -13,7 +13,6 @@ const Login = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     let userData = { email, password };
-    console.log(userData);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/users/login`,
@@ -25,12 +24,9 @@ const Login = () => {
           },
         }
       );
-      console.log(localStorage.getItem("token"));
-      console.log(response);
       
       setUser(response.data);
       navigate("/");
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
