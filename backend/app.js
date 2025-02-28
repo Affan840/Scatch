@@ -8,6 +8,12 @@ import cors from "cors";
 
 const app = express();
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
+
 app.use(cors({
   origin: process.env.CORS_ORIGIN,  
   credentials: true,
@@ -26,6 +32,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+
 
 // Routes imports
 import ownersRoute from "./routes/owners.routes.js";
