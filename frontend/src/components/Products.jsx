@@ -18,50 +18,7 @@ const Products = () => {
     increaseQuantity,
     decreaseQuantity,
   } = useProducts();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/products`,
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (response.data.products) {
-          console.log(response.data.products);
-          setProducts(response.data.products);
-        }
-        setError(null);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setError("Failed to load products. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex w-full h-full items-center justify-center ">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return <div className="text-center text-red-600 text-xl">{error}</div>;
-  }
 
   return (
     <div className="container mx-auto ml-2 md:px-4 py-8">

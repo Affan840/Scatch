@@ -1,17 +1,18 @@
 import { Router } from "express";
+import isLoggedIn from "../middlewares/isLoggedIn.middlewares.js";
 import { allOrders, orderDetails, placeOrder, placeOrderStripe, updateStatus, userOrders } from "../controllers/order.controllers.js";
 const router = Router();
 
 router.get("/", allOrders);
 
-router.get("/myorders", userOrders);
+router.get("/myorders", isLoggedIn, userOrders);
 
-router.get("/:id", orderDetails);
+router.get("/:id", isLoggedIn, orderDetails);
 
-router.post('/placeorder', placeOrder);
+router.post('/placeorder', isLoggedIn, placeOrder);
 
-router.post('/placeorderstripe', placeOrderStripe);
+router.post('/placeorderstripe', isLoggedIn, placeOrderStripe);
 
-router.post('/status', updateStatus);
+router.post('/status', isLoggedIn, updateStatus);
 
 export default router;

@@ -8,22 +8,22 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const placeOrder = async (req, res) => {
     console.log('Placing order...', req.body);
     try {
-        const {user,items, totalAmount, paymentMethod, shippingAddress} = req.body
+        const {items, totalAmount, paymentMethod, shippingAddress} = req.body
         const order = await Order.create({
-            user,
+            user: req.user._id,
             items,
             totalAmount,
             paymentMethod,
             shippingAddress
         })
-        await User.findByIdAndUpdate(user, { cart: [] });
+        await User.findByIdAndUpdate(req.user._id, { cart: [] });
 
         res.status(200).json({
             order
         })
     } catch (error) {
-        console.log(error);
-        
+        console.error("Error placing order:", error);
+        res.status(500).json({ error: "Failed to place order" });
     }
 }
 
@@ -31,10 +31,10 @@ import "dotenv/config"; // Load environment variables
 
 const placeOrderStripe = async (req, res) => {
     try {
-        const { user, items, totalAmount, paymentMethod, shippingAddress } = req.body;
+        const { items, totalAmount, paymentMethod, shippingAddress } = req.body;
 
         const order = await Order.create({
-            user,
+            user: req.user._id,
             items,
             totalAmount,
             paymentMethod,
@@ -48,7 +48,7 @@ const placeOrderStripe = async (req, res) => {
                     price_data: {
                         currency: "usd",
                         product_data: {
-                            name: "Order Payment",
+                        name: "Order Payment",
                         },
                         unit_amount: totalAmount * 100,
                     },
@@ -59,19 +59,18 @@ const placeOrderStripe = async (req, res) => {
             success_url: `${process.env.CORS_ORIGIN}/thankyou`,
             cancel_url: `${process.env.CORS_ORIGIN}/checkout`,
         });
-        await User.findByIdAndUpdate(user, { cart: [] });
+        await User.findByIdAndUpdate(req.user._id, { cart: [] });
         res.status(200).json({ url: session.url, orderNumber: order.orderNumber, orderId: order._id });
 
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: error.message });
+        console.error("Error placing Stripe order:", error);
+        res.status(500).json({ error: "Failed to place Stripe order" });
     }
 };
 
 const userOrders = async (req, res) => {
     try {
-        const user = req.query.user
-        const orders = await Order.find({ user })
+        const orders = await Order.find({ user: req.user._id })
         if (orders.length > 0) {
             res.json({
                 orders
@@ -90,7 +89,7 @@ const userOrders = async (req, res) => {
 const orderDetails = async (req, res) => {
     try {
         const orderId = req.params.id
-        const order = await Order.findById(orderId)
+        const order = await Order.findOne({ _id: orderId, user: req.user._id })
         if (order) {
             res.json({
                 order
@@ -124,7 +123,7 @@ const allOrders = async (req, res) => {
 const updateStatus = async (req, res) => {
     try {
         const { orderId, status } = req.body;
-        const order = await Order.findByIdAndUpdate(orderId, { status }, { new: true });
+        const order = await Order.findOneAndUpdate({ _id: orderId, user: req.user._id }, { status }, { new: true });
         if (order) {
             return res.status(200).json({ msg: "Order status updated", order });
         }

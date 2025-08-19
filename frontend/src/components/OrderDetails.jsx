@@ -24,7 +24,8 @@ const OrderDetails = () => {
     const getOrderDetails = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/orders/${orderId}`
+          `${import.meta.env.VITE_BASE_URL}/orders/${orderId}`,
+          { withCredentials: true }
         );
         console.log("Full Order Response:", response.data);
         console.log("Products:", productsData);
@@ -78,7 +79,7 @@ const OrderDetails = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
+    <div className="max-w-4xl mx-auto p-6 mt-8 space-y-8">
       {/* Order Details */}
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         <div className="p-6">

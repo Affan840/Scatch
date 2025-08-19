@@ -19,8 +19,14 @@ const registerUser = async (req, res) => {
           password: hash,
         });
         let token = generateToken(user);
-        res.cookie("token", token);
-        res.send(user);
+        res.cookie("token", token, {
+          httpOnly: true, // Prevents JavaScript access
+          secure: process.env.NODE_ENV === "production", // Set true only in production
+          sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // Use Lax for development
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+          path: "/",
+        });
+        res.status(200).json({ message: "Registration successful", user });
       }
     });
   } catch (error) {
@@ -53,11 +59,10 @@ const loginUser = async (req, res) => {
 
       let token = generateToken(user);
       console.log("cookie set", token);
-      res.cookie("token", token);
       res.cookie("token", token, {
         httpOnly: true, // Prevents JavaScript access
         secure: process.env.NODE_ENV === "production", // Set true only in production
-        sameSite: "None", // Required for cross-origin cookies
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // Use Lax for development
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         path: "/",
       });
@@ -73,9 +78,8 @@ const logoutUser = async (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     path: "/",
-    expires: new Date(0),
   });
   console.log("After logout - Cookies:", req.cookies); // Debug: Check if cookies are cleared
 
@@ -86,9 +90,9 @@ const logoutUser = async (req, res) => {
 
 const updateCart = async (req, res) => {
   try {
-    const { userId, cart } = req.body;
+    const { cart } = req.body;
     console.log("Received cart update request:", cart);
-    const user = await User.findByIdAndUpdate(userId, { cart }, { new: true });
+    const user = await User.findByIdAndUpdate(req.user._id, { cart }, { new: true });
     console.log("Cart updated successfully:", user);
     res.status(200).json(user);
   } catch (error) {
@@ -99,8 +103,7 @@ const updateCart = async (req, res) => {
 
 const fetchCart = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const user = await User.findById(userId);
+    const user = await User.findById(req.user._id);
     res.status(200).json({ cart: user.cart });
   } catch (error) {
     console.error("Error fetching cart:", error);

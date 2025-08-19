@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 
 const isLoggedIn = async (req, res, next) => {
-  res.cookie("hello", "world");
   console.log("Cookies received:", req.cookies); // Check if cookies exist
   const token = req.cookies.token;
   console.log("Token from cookie:", token); // Check if token exists
@@ -25,7 +24,12 @@ const isLoggedIn = async (req, res, next) => {
     next();
   } catch (error) {
     req.user = null;
-    res.clearCookie("token", { path: "/" }); // Clear expired token
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      path: "/"
+    }); // Clear expired token
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 };

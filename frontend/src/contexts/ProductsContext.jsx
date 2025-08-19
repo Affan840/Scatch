@@ -12,6 +12,7 @@ export const ProductsContext = createContext({
   setSortBy: () => {},
   cart: {},
   cartCount: 0,
+  cartLoading: false,
   addToCart: () => {},
   increaseQuantity: () => {},
   decreaseQuantity: () => {},
@@ -42,8 +43,34 @@ export const ProductsProvider = ({ children }) => {
   const [filterBy, setFilterBy] = useState(null);
   const [cart, setCart] = useState({});
   const [cartCount, setCartCount] = useState(0);
+  const [cartLoading, setCartLoading] = useState(false);
 
   const { userData } = useUser();
+  
+  // Load products when the provider is mounted
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/products`,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.data.products) {
+          setProducts(response.data.products);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    
+    loadProducts();
+  }, []);
+  
   useEffect(() => {
     if (userData) {
       fetchCart();
@@ -52,9 +79,11 @@ export const ProductsProvider = ({ children }) => {
 
 
   const fetchCart = async () => {
+    setCartLoading(true);
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/users/cart/${userData._id}`
+        `${import.meta.env.VITE_BASE_URL}/users/cart`,
+        { withCredentials: true }
       );
 
       const cartArray = response.data.cart || [];
@@ -67,6 +96,8 @@ export const ProductsProvider = ({ children }) => {
       updateCartCount(cartObject);
     } catch (error) {
       console.error("Error fetching cart:", error);
+    } finally {
+      setCartLoading(false);
     }
   };
 
@@ -80,9 +111,8 @@ export const ProductsProvider = ({ children }) => {
 
     try {
       await axios.post(`${import.meta.env.VITE_BASE_URL}/users/updatecart`, {
-        userId: userData._id,
         cart: cartArray,
-      });
+      }, { withCredentials: true });
     } catch (error) {
       console.error("Error updating cart:", error);
     }
@@ -189,6 +219,7 @@ export const ProductsProvider = ({ children }) => {
         sortProducts,
         cart: userData ? cart : {},
         cartCount: userData ? cartCount : 0,
+        cartLoading,
         addToCart,
         increaseQuantity,
         decreaseQuantity,

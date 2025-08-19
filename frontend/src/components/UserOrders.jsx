@@ -18,6 +18,7 @@ const UserOrders = () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/orders/myorders`, {
           params: { user: userData._id },
+          withCredentials: true
         })
         setOrders(response.data.orders)
         setLoading(false)

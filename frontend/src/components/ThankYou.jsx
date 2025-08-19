@@ -30,7 +30,8 @@ const ThankYou = () => {
     const fetchOrderDetails = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/orders/${orderId}`
+          `${import.meta.env.VITE_BASE_URL}/orders/${orderId}`,
+          { withCredentials: true }
         );
         setOrderDetails(response.data.order);
 

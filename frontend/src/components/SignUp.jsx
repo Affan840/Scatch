@@ -32,7 +32,12 @@ const SignUp = () => {
     const userData = { fullname: fullName, email, password };
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, userData);
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, userData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       console.log(response);
       navigate('/');
     } catch (error) {

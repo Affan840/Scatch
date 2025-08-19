@@ -9,8 +9,9 @@ import axios from "axios"
 const Checkout = () => {
   const navigate = useNavigate()
   const { userData } = useUser()
-  const { cart, productsData, clearCart } = useProducts()
+  const { cart, productsData, cartLoading, clearCart } = useProducts()
   const [errors, setErrors] = useState({})
+  const [orderError, setOrderError] = useState("")
   const [formData, setFormData] = useState({
     email: "",
     firstName: "",
@@ -104,6 +105,7 @@ const Checkout = () => {
     if (!validateForm()) {
       return
     }
+    setOrderError(""); // Clear any previous error
     console.log('Placing order...');
 
     if (formData.paymentMethod === "COD") {
@@ -125,7 +127,7 @@ const Checkout = () => {
             postalCode: formData.postalCode,
             phone: formData.phone,
           },
-        })
+        }, { withCredentials: true })
         if (response.status === 200) {
           clearCart();
           localStorage.setItem('orderId', response.data.order._id);
@@ -133,6 +135,7 @@ const Checkout = () => {
         }
       } catch (error) {
         console.error('Error placing order:', error);
+        setOrderError("Failed to place order. Please try again.");
       }
     } else {
       try {
@@ -153,7 +156,7 @@ const Checkout = () => {
             postalCode: formData.postalCode,
             phone: formData.phone,
           },
-        })
+        }, { withCredentials: true })
         if (response.status === 200) {
           clearCart();
           localStorage.setItem("orderNumber", response.data.orderNumber);
@@ -163,6 +166,7 @@ const Checkout = () => {
         }
       } catch (error) {
         console.error('Error placing order:', error);
+        setOrderError("Failed to place order. Please try again.");
       }
     }
   }
@@ -265,6 +269,11 @@ const Checkout = () => {
               </label>
             </div>
 
+            {orderError && (
+              <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
+                {orderError}
+              </div>
+            )}
             <button
               onClick={placeOrder}
               className="bg-blue-600 text-white w-full py-4 rounded-md text-lg font-semibold transition duration-300 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -278,36 +287,44 @@ const Checkout = () => {
         <div className="bg-white p-8 shadow-lg rounded-lg">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
             <h2 className="text-2xl font-semibold mb-6">Order Summary</h2>
-            <div className="space-y-4 mb-6">
-              {cartItems.map((item) => (
-                <div key={item._id} className="flex items-center space-x-4 py-4 border-b border-gray-200">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-16 h-16 object-contain rounded-md"
-                  />
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold">{item.name}</h3>
-                    <p className="text-gray-600">Qty: {item.quantity}</p>
-                  </div>
-                  <p className="text-lg font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
+            {cartLoading ? (
+              <div className="flex justify-center items-center h-32">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+              </div>
+            ) : (
+              <>
+                <div className="space-y-4 mb-6">
+                  {cartItems.map((item) => (
+                    <div key={item._id} className="flex items-center space-x-4 py-4 border-b border-gray-200">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-16 h-16 object-contain rounded-md"
+                      />
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold">{item.name}</h3>
+                        <p className="text-gray-600">Qty: {item.quantity}</p>
+                      </div>
+                      <p className="text-lg font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <div className="space-y-2 text-lg">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Subtotal:</span>
-                <span className="font-semibold">${totalAmount.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Shipping:</span>
-                <span className="font-semibold text-green-600">FREE</span>
-              </div>
-              <div className="flex justify-between border-t border-gray-200 pt-4 mt-4">
-                <span className="text-xl font-bold">Total:</span>
-                <span className="text-xl font-bold">${totalAmount.toFixed(2)}</span>
-              </div>
-            </div>
+                <div className="space-y-2 text-lg">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Subtotal:</span>
+                    <span className="font-semibold">${totalAmount.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Shipping:</span>
+                    <span className="font-semibold text-green-600">FREE</span>
+                  </div>
+                  <div className="flex justify-between border-t border-gray-200 pt-4 mt-4">
+                    <span className="text-xl font-bold">Total:</span>
+                    <span className="text-xl font-bold">${totalAmount.toFixed(2)}</span>
+                  </div>
+                </div>
+              </>
+            )}
           </motion.div>
         </div>
       </div>

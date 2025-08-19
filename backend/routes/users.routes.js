@@ -1,4 +1,5 @@
 import { Router } from "express";
+import isLoggedIn from "../middlewares/isLoggedIn.middlewares.js";
 
 import { fetchCart, loginUser, logoutUser, registerUser, updateCart } from "../controllers/user.controllers.js";
 
@@ -10,8 +11,8 @@ router.post("/login", loginUser)
 
 router.get("/logout", logoutUser)
 
-router.post("/updatecart", updateCart)
+router.post("/updatecart", isLoggedIn, updateCart)
 
-router.get("/cart/:userId", fetchCart)
+router.get("/cart", isLoggedIn, fetchCart)
 
 export default router;
