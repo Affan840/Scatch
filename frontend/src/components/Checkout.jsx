@@ -5,12 +5,14 @@ import { useProducts, useUser } from "../contexts"
 import { motion } from "framer-motion"
 import { useNavigate } from "react-router"
 import axios from "axios"
+import { toast } from "react-toastify"
 
 const Checkout = () => {
   const navigate = useNavigate()
   const { userData } = useUser()
   const { cart, productsData, cartLoading, clearCart } = useProducts()
   const [errors, setErrors] = useState({})
+const [loading, setLoading] = useState(false)
   const [orderError, setOrderError] = useState("")
   const [formData, setFormData] = useState({
     email: "",
@@ -105,6 +107,7 @@ const Checkout = () => {
     if (!validateForm()) {
       return
     }
+    setLoading(true);
     setOrderError(""); // Clear any previous error
     console.log('Placing order...');
 
@@ -130,12 +133,17 @@ const Checkout = () => {
         }, { withCredentials: true })
         if (response.status === 200) {
           clearCart();
+          toast.success("Order placed successfully!");
           localStorage.setItem('orderId', response.data.order._id);
           navigate("/thankyou", { state: { orderNumber: response.data.order.orderNumber, totalAmount } })
         }
       } catch (error) {
         console.error('Error placing order:', error);
-        setOrderError("Failed to place order. Please try again.");
+        const errorMessage = error.response?.data?.message || error.response?.data || "Failed to place order. Please try again.";
+        setOrderError(errorMessage);
+        toast.error(errorMessage);
+      } finally {
+        setLoading(false);
       }
     } else {
       try {
@@ -159,6 +167,7 @@ const Checkout = () => {
         }, { withCredentials: true })
         if (response.status === 200) {
           clearCart();
+          toast.success("Order placed successfully!");
           localStorage.setItem("orderNumber", response.data.orderNumber);
           localStorage.setItem("totalAmount", totalAmount);
           localStorage.setItem('orderId', response.data.order);
@@ -166,7 +175,11 @@ const Checkout = () => {
         }
       } catch (error) {
         console.error('Error placing order:', error);
-        setOrderError("Failed to place order. Please try again.");
+        const errorMessage = error.response?.data?.message || error.response?.data || "Failed to place order. Please try again.";
+        setOrderError(errorMessage);
+        toast.error(errorMessage);
+      } finally {
+        setLoading(false);
       }
     }
   }
@@ -276,9 +289,10 @@ const Checkout = () => {
             )}
             <button
               onClick={placeOrder}
-              className="bg-blue-600 text-white w-full py-4 rounded-md text-lg font-semibold transition duration-300 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              disabled={loading}
+              className={`bg-blue-600 text-white w-full py-4 rounded-md text-lg font-semibold transition duration-300 ease-in-out hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              Complete Order
+              {loading ? "Placing Order..." : "Complete Order"}
             </button>
           </motion.div>
         </div>

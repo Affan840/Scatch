@@ -3,6 +3,8 @@ import { Outlet, useLocation, useNavigate } from "react-router";
 import { ProductsProvider, UserProvider, useUser } from "./contexts";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const { setUser } = useUser();
@@ -44,6 +46,7 @@ const App = () => {
     <ProductsProvider>
       <Nav />
       <Outlet />
+<ToastContainer />
     </ProductsProvider>
   );
 };

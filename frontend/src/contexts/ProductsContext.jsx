@@ -1,6 +1,7 @@
 import { useEffect, createContext, useContext, useState } from "react";
 import { useUser } from "../contexts";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const ProductsContext = createContext({
   productsData: [],
@@ -13,6 +14,7 @@ export const ProductsContext = createContext({
   cart: {},
   cartCount: 0,
   cartLoading: false,
+  productsLoading: true,
   addToCart: () => {},
   increaseQuantity: () => {},
   decreaseQuantity: () => {},
@@ -44,6 +46,7 @@ export const ProductsProvider = ({ children }) => {
   const [cart, setCart] = useState({});
   const [cartCount, setCartCount] = useState(0);
   const [cartLoading, setCartLoading] = useState(false);
+const [productsLoading, setProductsLoading] = useState(true);
 
   const { userData } = useUser();
   
@@ -65,6 +68,9 @@ export const ProductsProvider = ({ children }) => {
         }
       } catch (error) {
         console.error("Error fetching products:", error);
+        toast.error("Failed to load products. Please try again later.");
+      } finally {
+        setProductsLoading(false);
       }
     };
     
@@ -96,6 +102,7 @@ export const ProductsProvider = ({ children }) => {
       updateCartCount(cartObject);
     } catch (error) {
       console.error("Error fetching cart:", error);
+      toast.error("Failed to load cart. Please try again later.");
     } finally {
       setCartLoading(false);
     }
@@ -115,6 +122,7 @@ export const ProductsProvider = ({ children }) => {
       }, { withCredentials: true });
     } catch (error) {
       console.error("Error updating cart:", error);
+      toast.error("Failed to update cart. Please try again.");
     }
   };
 
@@ -131,6 +139,7 @@ export const ProductsProvider = ({ children }) => {
       const updatedCart = { ...prevCart, [id]: (prevCart[id] || 0) + 1 };
       updateCartInBackend(updatedCart);
       updateCartCount(updatedCart);
+      toast.success("Item added to cart!");
       return updatedCart;
     });
   };
@@ -143,6 +152,7 @@ export const ProductsProvider = ({ children }) => {
       };
       updateCartInBackend(updatedCart);
       updateCartCount(updatedCart);
+      toast.success("Quantity updated!");
       return updatedCart;
     });
   };
@@ -158,6 +168,7 @@ export const ProductsProvider = ({ children }) => {
       }
       updateCartInBackend(updatedCart);
       updateCartCount(updatedCart);
+      toast.success("Quantity updated!");
       return updatedCart;
     });
   };
@@ -166,6 +177,7 @@ export const ProductsProvider = ({ children }) => {
     setCart({});
     updateCartInBackend({});
     setCartCount(0);
+    toast.success("Cart cleared!");
   };
 
   const setProducts = (products) => {
@@ -220,6 +232,7 @@ export const ProductsProvider = ({ children }) => {
         cart: userData ? cart : {},
         cartCount: userData ? cartCount : 0,
         cartLoading,
+        productsLoading,
         addToCart,
         increaseQuantity,
         decreaseQuantity,

@@ -17,6 +17,7 @@ const Products = () => {
     addToCart,
     increaseQuantity,
     decreaseQuantity,
+    productsLoading,
   } = useProducts();
   const navigate = useNavigate();
 
@@ -25,7 +26,11 @@ const Products = () => {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Products</h1>
       </div>
-      {filteredProducts.length > 0 ? (
+      {productsLoading ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
+        </div>
+      ) : filteredProducts.length > 0 ? (
         <div className="grid grid-cols-2  tablet:grid-cols-3 lg:grid-cols-4 sm:gap-4 gap-2 sm:p-4">
           {filteredProducts.map((product) => (
             <div

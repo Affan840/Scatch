@@ -2,16 +2,19 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useUser } from "../contexts";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const { setUser } = useUser();
 
   const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     let userData = { email, password };
     try {
       const response = await axios.post(
@@ -26,9 +29,14 @@ const Login = () => {
       );
       
       setUser(response.data);
+      toast.success("Logged in successfully!");
       navigate("/");
     } catch (error) {
       console.log(error);
+      const errorMessage = error.response?.data?.message || error.response?.data || "Login failed. Please check your credentials.";
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,9 +68,10 @@ const Login = () => {
           />
           <button
             type="submit"
-            className="cursor-pointer hover:bg-blue-400 rounded-full px-5 py-2 text-lg mt-2 text-white border-none w-full lg:w-max font-semibold bg-blue-400 transition duration-300"
+            disabled={loading}
+            className={`cursor-pointer hover:bg-blue-400 rounded-full px-5 py-2 text-lg mt-2 text-white border-none w-full lg:w-max font-semibold bg-blue-400 transition duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
       </div>

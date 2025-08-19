@@ -2,6 +2,8 @@
 
 A full-stack e-commerce application built with React, Node.js, Express, and MongoDB.
 
+[Live Preview](https://scatch-frontend-virid.vercel.app/)
+
 ## Project Structure
 
 ```

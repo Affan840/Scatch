@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [fullName, setFullName] = useState("");
@@ -8,6 +9,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -29,6 +31,9 @@ const SignUp = () => {
     e.preventDefault();
     if (!validateForm()) return;
 
+    setLoading(true);
+    setApiError("");
+
     const userData = { fullname: fullName, email, password };
 
     try {
@@ -39,10 +44,15 @@ const SignUp = () => {
         },
       });
       console.log(response);
+      toast.success("Account created successfully!");
       navigate('/');
     } catch (error) {
       console.error("Error registering user:", error);
-      setApiError(error.response?.data || "Something went wrong. Please try again.");
+      const errorMessage = error.response?.data?.message || error.response?.data || "Something went wrong. Please try again.";
+      setApiError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,9 +108,10 @@ const SignUp = () => {
 
           <button
             type="submit"
-            className="cursor-pointer hover:bg-blue-500 rounded-full px-5 py-2 text-lg mt-2 text-white border-none w-full lg:w-max font-semibold bg-blue-400 transition duration-300"
+            disabled={loading}
+            className={`cursor-pointer hover:bg-blue-500 rounded-full px-5 py-2 text-lg mt-2 text-white border-none w-full lg:w-max font-semibold bg-blue-400 transition duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            Create My Account
+            {loading ? "Creating Account..." : "Create My Account"}
           </button>
         </form>
       </div>
